@@ -1,12 +1,15 @@
 services:
-#  proxy:
-#      build:
-#        context: ./proxy
-#      ports:
-#        - '8081:80'
-#      networks:
-#        - backend-network
-#        - frontend-network
+  proxy:
+      build:
+        context: ./proxy
+      ports:
+        - '8081:80'
+      depends_on:
+        - backend
+        - frontend
+      networks:
+        - backend-network
+        - frontend-network
   backend:
     restart: on-failure
     build:
