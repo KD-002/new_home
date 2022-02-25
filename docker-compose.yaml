@@ -1,0 +1,54 @@
+services:
+#  proxy:
+#      build:
+#        context: ./proxy
+#      ports:
+#        - '8081:80'
+#      networks:
+#        - backend-network
+#        - frontend-network
+  backend:
+    restart: on-failure
+    build:
+      context: ./backend_core
+    ports:
+      - '8000:8000'
+    container_name: api-server
+    volumes:
+      - ./backend_core:/app
+    depends_on:
+      - postgres
+    networks:
+      - backend-network
+      - postgres-network
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - '3000:3000'
+    stdin_open: true
+    volumes:
+      - ./frontend/src:/app/src
+    networks:
+      - backend-network
+      - frontend-network
+  postgres:
+    image: postgres
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    networks:
+      - postgres-network
+
+networks:
+  frontend-network:
+    driver: bridge
+  backend-network:
+    driver: bridge
+  postgres-network:
+    driver: bridge
+
+volumes:
+  postgres:
