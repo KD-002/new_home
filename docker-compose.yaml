@@ -41,9 +41,8 @@ services:
     image: postgres
     volumes:
       - postgres:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=password
+    env_file:
+      - ./backend_core/env/.env-db
     networks:
       - postgres-network
 
