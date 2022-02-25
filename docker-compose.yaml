@@ -18,6 +18,8 @@ services:
       - ./backend_core:/app
     depends_on:
       - postgres
+    env_file:
+      - ./backend_core/env/.env
     networks:
       - backend-network
       - postgres-network
