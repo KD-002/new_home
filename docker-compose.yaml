@@ -1,15 +1,46 @@
 services:
   proxy:
-      build:
-        context: ./proxy
-      ports:
-        - '8081:80'
-      depends_on:
-        - backend
-        - frontend
-      networks:
-        - backend-network
-        - frontend-network
+    build:
+      context: ./proxy
+    ports:
+      - '8081:80'
+    depends_on:
+      - auth
+      - backend
+      - frontend
+    networks:
+      - backend-network
+      - frontend-network
+
+  auth:
+    restart: on-failure
+    build:
+      context: ./auth
+    ports:
+      - '8001:8000'
+    container_name: auth-api-server
+    volumes:
+      - ./auth:/app
+    depends_on:
+      - auth_postgres
+    env_file:
+      - ./auth/env/.env
+      - ./auth/env/.env-db
+    networks:
+      - auth-network
+      - auth_postgres-network
+
+  auth_postgres:
+    image: postgres
+    ports:
+      - "5433:5432"
+    volumes:
+      - auth_postgres:/var/lib/postgresql/data
+    env_file:
+      - ./auth/env/.env-db
+    networks:
+      - auth_postgres-network
+
   backend:
     restart: on-failure
     build:
@@ -27,6 +58,7 @@ services:
     networks:
       - backend-network
       - postgres-network
+
   frontend:
     build:
       context: ./frontend
@@ -38,6 +70,7 @@ services:
     networks:
       - backend-network
       - frontend-network
+
   postgres:
     image: postgres
     ports:
@@ -56,6 +89,11 @@ networks:
     driver: bridge
   postgres-network:
     driver: bridge
+  auth_postgres-network:
+    driver: bridge
+  auth-network:
+    driver: bridge
 
 volumes:
   postgres:
+  auth_postgres:
