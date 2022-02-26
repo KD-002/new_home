@@ -16,6 +16,6 @@ class HostView(generics.ListAPIView):
     pagination_class = TenPagination
 
 
-class HostDetail(generics.RetrieveUpdateDestroyAPIView):
+class HostDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Host.objects.all()
     serializer_class = HostSerializer

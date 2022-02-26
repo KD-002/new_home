@@ -6,5 +6,5 @@ app_name = 'host'
 
 urlpatterns = [
     path('', views.HostView.as_view(), name='host'),
-    path('<int:pk>/', views.HostDetail.as_view(), name='host-detail'),
+    path('<int:pk>/', views.HostDetailView.as_view(), name='host-detail'),
 ]
