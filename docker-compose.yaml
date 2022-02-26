@@ -34,7 +34,7 @@ services:
       - '3000:3000'
     stdin_open: true
     volumes:
-      - ./frontend/src:/app/src
+      - ./frontend:/app/
     networks:
       - backend-network
       - frontend-network
