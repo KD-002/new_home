@@ -22,18 +22,18 @@ services:
     volumes:
       - ./auth:/app
     depends_on:
-      - auth_postgres
+      - postgres_auth
     env_file:
       - ./auth/env/.env
       - ./auth/env/.env-db
     networks:
-      - auth-network
+      - backend-network
       - auth_postgres-network
 
-  auth_postgres:
+  postgres_auth:
     image: postgres
-    ports:
-      - "5433:5432"
+#    ports:
+#      - "5432:5432"
     volumes:
       - auth_postgres:/var/lib/postgresql/data
     env_file:
@@ -51,7 +51,7 @@ services:
     volumes:
       - ./backend_core:/app
     depends_on:
-      - postgres
+      - postgres_core
     env_file:
       - ./backend_core/env/.env
       - ./backend_core/env/.env-db
@@ -71,7 +71,7 @@ services:
       - backend-network
       - frontend-network
 
-  postgres:
+  postgres_core:
     image: postgres
     ports:
       - "5432:5432"
@@ -90,8 +90,6 @@ networks:
   postgres-network:
     driver: bridge
   auth_postgres-network:
-    driver: bridge
-  auth-network:
     driver: bridge
 
 volumes:
