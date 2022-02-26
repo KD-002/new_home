@@ -1,0 +1,14 @@
+venv
+
+.idea
+.vscode
+db.sqlite3
+
+**/*.pyc
+
+
+env/.env
+env/.env-db
+
+media
+staticfiles
