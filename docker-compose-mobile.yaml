@@ -23,10 +23,10 @@ services:
       - postgres
     env_file:
       - ./backend_core/env/.env
-      - ./backend_core/env/.env-db
     networks:
       - backend-network
       - postgres-network
+      - mobile-network
   frontend:
     build:
       context: ./frontend
@@ -40,14 +40,25 @@ services:
       - frontend-network
   postgres:
     image: postgres
-    ports:
-      - "5432:5432"
     volumes:
       - postgres:/var/lib/postgresql/data
-    env_file:
-      - ./backend_core/env/.env-db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
     networks:
       - postgres-network
+  mobile:
+    build:
+      context: ./mobile
+    volumes:
+      - ./mobile/src:/app/src
+    ports:
+      - 19000:19000
+      - 19001:19001
+      - 19002:19002
+      - 19006:19006
+    environment:
+      - EXPO_DEVTOOLS_LISTEN_ADDRESS=0.0.0.0
 
 networks:
   frontend-network:
@@ -55,6 +66,8 @@ networks:
   backend-network:
     driver: bridge
   postgres-network:
+    driver: bridge
+  mobile-network:
     driver: bridge
 
 volumes:

@@ -1,25 +1,23 @@
-import logo from './logo.svg';
 import './App.css';
+import {useState} from "react";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [hosts, setHosts] = useState();
+
+    const handleHosts = () => {
+        fetch('api/v1/hosts')
+            .then(response => response.json())
+            .then(data => setHosts(data))
+            .catch(error => {
+            })
+    }
+
+    return (
+        <div className="App">
+            <button onClick={handleHosts}>Get all Hosts</button>
+            <pre>{JSON.stringify(hosts, null, 2)}</pre>
+        </div>
+    );
 }
 
 export default App;
