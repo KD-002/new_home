@@ -27,3 +27,12 @@ docker compose -f ./docker-compose-mobile.yaml up
     - web -> http://0.0.0.0:19006/
     - android -> http://0.0.0.0:19001/
     - dashboard -> http://0.0.0.0:19002/
+
+### Troubleshooting
+- `docker compose down -v`
+- `docker network prune`
+- `docker images prune`
+- `docker volume prune`
+- `docker rm $(docker ps -a -q)` # give error when you don`t have containers
+- `docker compose build --no-cache`
+- `docker compose up`
