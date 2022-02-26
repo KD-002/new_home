@@ -23,6 +23,7 @@ services:
       - postgres
     env_file:
       - ./backend_core/env/.env
+      - ./backend_core/env/.env-db
     networks:
       - backend-network
       - postgres-network
@@ -39,6 +40,8 @@ services:
       - frontend-network
   postgres:
     image: postgres
+    ports:
+      - "5432:5432"
     volumes:
       - postgres:/var/lib/postgresql/data
     env_file:
