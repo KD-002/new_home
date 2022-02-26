@@ -22,39 +22,39 @@ def create_fake_users(apps, _) -> None:
         class Meta:
             model = User
 
-        profile = faker.simple_profile()
-        username = profile['username']
-        email = profile['username']
-        password = faker.password()
+        username = factory.Sequence(lambda _: faker.unique.first_name())
+        email = factory.Sequence(lambda _: faker.email())
+        password = factory.Sequence(lambda _: faker.password())
 
     class SubtypesFactory(factory.django.DjangoModelFactory):
         class Meta:
             model = Subtype
 
-        name = faker.words(nb=20)
+        name = factory.Sequence(lambda _: faker.text(max_nb_chars=100))
 
     class HostFactory(factory.django.DjangoModelFactory):
         class Meta:
             model = Host
 
-        user = factory.RelatedFactory(UserFactory)
+        user = factory.SubFactory(UserFactory)
         subtype = factory.RelatedFactoryList(SubtypesFactory, size=lambda: random.randint(0, 5))
-        title = faker.text(max_nb_chars=200)
-        start_date = faker.date_between(
+        title = factory.Sequence(lambda _: faker.text(max_nb_chars=200))
+        start_date = factory.Sequence(lambda _: faker.date_between(
             start_date=datetime.date.today() + datetime.timedelta(days=10),
             end_date=datetime.date.today() + datetime.timedelta(days=30)
-        )
-        end_date = faker.date_between(
+        ))
+        end_date = factory.Sequence(lambda _: faker.date_between(
             start_date=datetime.date.today() + datetime.timedelta(days=45),
             end_date=datetime.date.today() + datetime.timedelta(days=300)
-        )
-        description = faker.text(max_nb_chars=1000)
-        location = faker.text(max_nb_chars=200)
-        contact_address = faker.text(max_nb_chars=500)
-        contact_email = faker.email()
-        contact_phone = random.randrange(start=int(10e9), stop=int(10e14))
+        ))
+        description = factory.Sequence(lambda _: faker.text(max_nb_chars=1000))
+        location = factory.Sequence(lambda _: faker.text(max_nb_chars=200))
+        contact_address = factory.Sequence(lambda _: faker.text(max_nb_chars=500))
+        contact_email = factory.Sequence(lambda _: faker.email())
+        contact_phone = factory.Sequence(
+            lambda _: random.randrange(start=int(10e9), stop=int(10e14)))
 
-    for _ in range(10):
+    for _ in range(200):
         HostFactory()
 
 
