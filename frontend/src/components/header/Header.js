@@ -23,7 +23,7 @@ function Header() {
                     <Navbar.Toggle/>
                     <Nav className="me-auto">
                         <LinkContainer to="/hosts">
-                            <Nav.Link>Post host</Nav.Link>
+                            <Nav.Link className='nav-item'>Post host</Nav.Link>
                         </LinkContainer>
 
                         <LinkContainer to="/helps">
