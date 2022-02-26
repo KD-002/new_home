@@ -1,31 +1,32 @@
 import './App.css';
-import {useState} from "react";
-import { useTranslation } from 'react-i18next';
-import LangSwitcher from './components/LangSwitcher';
+import {
+    BrowserRouter, Routes, Route,
+} from "react-router-dom";
+
+import {Container} from "react-bootstrap";
+
+import Header from "./components/header/Header";
+
+import Home from "./components/home/Home";
+import Host from "./components/hosts/Host";
 
 function App() {
-    const [hosts, setHosts] = useState();
-    const { t, i18n } = useTranslation();
-
-    const handleHosts = () => {
-        fetch('api/v1/hosts')
-            .then(response => response.json())
-            .then(data => setHosts(data))
-            .catch(error => {
-            })
-    }
 
     return (
-        
-            <div className="App">
-            <button onClick={handleHosts}>{t('Get all Hosts')}</button>
-            <LangSwitcher/>
-            <pre>{JSON.stringify(hosts, null, 2)}</pre>
-        </div>
-
-        
-        
-    );
+        <BrowserRouter>
+            <Header/>
+            <Routes>
+                <Route path="/" element={<Home/>}/>
+                <Route path="/hosts/:id" element={<Host/>}/>
+                <Route path="/helps" element={<Container>
+                    <h1>Helps</h1></Container>}/>
+                <Route path="/transports" element={<Container>
+                    <h1>Transports</h1></Container>}/>
+                <Route path="*" element={<Container>
+                    <h1>404</h1></Container>}/>
+            </Routes>
+        </BrowserRouter>
+    )
 }
 
 export default App;
