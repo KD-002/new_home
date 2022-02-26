@@ -17,6 +17,9 @@ function Home() {
                 <Col xs={12} sm={6}>
                     <HostList hosts={hosts}/>
                 </Col>
+                <Col xs={12} sm={6}>
+
+                </Col>
             </Row>
         </Container>
     );
